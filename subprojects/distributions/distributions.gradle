@@ -170,13 +170,15 @@ task uploadDistributionSnapshot {
         def password = project.findProperty("artifactory_password") ?: "nopass"
         def baseUri = "https://repo.gradle.org/gradle/kotlin-dsl-snapshots-local"
         archives.each { archive ->
-            (new URL("$baseUri/${archive.name}").openConnection() as HttpURLConnection).with {
+            def url = new URL("$baseUri/${archive.name}")
+            println "PUT $url"
+            println ((url.openConnection() as HttpURLConnection).with {
                 doOutput = true
                 requestMethod = "PUT"
                 setRequestProperty("Authorization", "Basic ${Base64.urlEncoder.encodeToString("$username:$password".bytes)}")
                 outputStream.withCloseable { out -> archive.withInputStream { out << it } }
                 inputStream.text
-            }
+            })
         }
     }
 }
