@@ -10,9 +10,6 @@
 > Task :publishBinaryPublicationToExternalRepository
 > Task :publishBinaryPublicationToInternalRepository SKIPPED
 > Task :publish
-> Task :publishBinaryAndSourcesPublicationToMavenLocal
-> Task :publishBinaryPublicationToMavenLocal SKIPPED
-> Task :publishToMavenLocal
 
 BUILD SUCCESSFUL in 0s
-9 actionable tasks: 9 executed
+8 actionable tasks: 8 executed
