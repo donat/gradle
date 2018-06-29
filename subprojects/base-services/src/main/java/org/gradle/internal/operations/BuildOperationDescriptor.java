@@ -27,15 +27,17 @@ public final class BuildOperationDescriptor {
     private final String displayName;
     private final String name;
     private final String progressDisplayName;
+    private final String progressLoggingCategory;
     private final Object details;
     private final BuildOperationCategory operationType;
 
-    private BuildOperationDescriptor(OperationIdentifier id, OperationIdentifier parentId, String name, String displayName, String progressDisplayName, Object details, BuildOperationCategory operationType) {
+    private BuildOperationDescriptor(OperationIdentifier id, OperationIdentifier parentId, String name, String displayName, String progressDisplayName, String progressLoggingCategory, Object details, BuildOperationCategory operationType) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
         this.displayName = displayName;
         this.progressDisplayName = progressDisplayName;
+        this.progressLoggingCategory = progressLoggingCategory;
         this.details = details;
         this.operationType = operationType;
     }
@@ -73,6 +75,14 @@ public final class BuildOperationDescriptor {
     }
 
     /**
+     * The specific category to be used for progress logging, if necessary
+     */
+    @Nullable
+    public String getProgressLoggingCategory() {
+        return progressLoggingCategory;
+    }
+
+    /**
      * Arbitrary metadata for the operation.
      */
     @Nullable
@@ -100,6 +110,7 @@ public final class BuildOperationDescriptor {
         private final String displayName;
         private String name;
         private String progressDisplayName;
+        private String progressLoggingCategory;
         private Object details;
         private BuildOperationRef parent;
         private BuildOperationCategory operationType = BuildOperationCategory.UNCATEGORIZED;
@@ -116,6 +127,11 @@ public final class BuildOperationDescriptor {
 
         public Builder progressDisplayName(String progressDisplayName) {
             this.progressDisplayName = progressDisplayName;
+            return this;
+        }
+
+        public Builder progressLoggingCategory(String progressLoggingCategory) {
+            this.progressLoggingCategory = progressLoggingCategory;
             return this;
         }
 
@@ -150,7 +166,7 @@ public final class BuildOperationDescriptor {
         }
 
         public BuildOperationDescriptor build(@Nullable OperationIdentifier id, @Nullable OperationIdentifier defaultParentId) {
-            return new BuildOperationDescriptor(id, parent == null ? defaultParentId : parent.getId(), name, displayName, progressDisplayName, details, operationType);
+            return new BuildOperationDescriptor(id, parent == null ? defaultParentId : parent.getId(), name, displayName, progressDisplayName, progressLoggingCategory, details, operationType);
         }
     }
 }

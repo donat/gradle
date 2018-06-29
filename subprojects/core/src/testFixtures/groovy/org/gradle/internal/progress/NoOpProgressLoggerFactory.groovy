@@ -21,18 +21,22 @@ import org.gradle.internal.logging.progress.ProgressLoggerFactory
 import org.gradle.internal.operations.BuildOperationDescriptor
 
 class NoOpProgressLoggerFactory implements ProgressLoggerFactory {
+    @Override
     ProgressLogger newOperation(String loggerCategory) {
         throw new UnsupportedOperationException()
     }
 
+    @Override
     ProgressLogger newOperation(Class<?> loggerCategory) {
         throw new UnsupportedOperationException()
     }
 
-    ProgressLogger newOperation(Class<?> loggerCategory, BuildOperationDescriptor buildOperationDescriptor) {
-        return new Logger()
+    @Override
+    ProgressLogger newOperation(String loggerCategory, BuildOperationDescriptor buildOperationDescriptor) {
+        new Logger()
     }
 
+    @Override
     ProgressLogger newOperation(Class<?> loggerClass, ProgressLogger parent) {
         throw new UnsupportedOperationException()
     }
@@ -42,31 +46,39 @@ class NoOpProgressLoggerFactory implements ProgressLoggerFactory {
         String shortDescription
         String loggingHeader
 
+        @Override
         String getDescription() { description }
 
+        @Override
         ProgressLogger setDescription(String description) {
             this.description = description
             this
         }
 
+        @Override
         String getShortDescription() { shortDescription }
 
+        @Override
         ProgressLogger setShortDescription(String description) {
             this.shortDescription = description
             this
         }
 
+        @Override
         String getLoggingHeader() { loggingHeader }
 
+        @Override
         ProgressLogger setLoggingHeader(String header) {
             this.loggingHeader = header
             this
         }
 
+        @Override
         ProgressLogger start(String description, String shortDescription) {
             start(description, shortDescription, 0)
         }
 
+        @Override
         ProgressLogger start(String description, String shortDescription, int totalProgress) {
             setDescription(description)
             setShortDescription(shortDescription)
@@ -74,12 +86,25 @@ class NoOpProgressLoggerFactory implements ProgressLoggerFactory {
             this
         }
 
+        @Override
         void started() {}
+
+        @Override
         void started(String status) {}
+
+        @Override
         void started(String status, int totalProgress) {}
+
+        @Override
         void progress(String status) {}
+
+        @Override
         void progress(String status, boolean failing) {}
+
+        @Override
         void completed() {}
+
+        @Override
         void completed(String status, boolean failed) {}
     }
 }

@@ -16,6 +16,7 @@
 
 package org.gradle.internal.operations;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.gradle.api.Action;
@@ -209,7 +210,8 @@ public class DefaultBuildOperationExecutor implements BuildOperationExecutor, St
 
     private ProgressLogger createProgressLogger(BuildOperationState currentOperation) {
         BuildOperationDescriptor descriptor = currentOperation.getDescription();
-        ProgressLogger progressLogger = progressLoggerFactory.newOperation(DefaultBuildOperationExecutor.class, descriptor);
+        String loggingCategory = Objects.firstNonNull(descriptor.getProgressLoggingCategory(), DefaultBuildOperationExecutor.class.getName());
+        ProgressLogger progressLogger = progressLoggerFactory.newOperation(loggingCategory, descriptor);
         return progressLogger.start(descriptor.getDisplayName(), descriptor.getProgressDisplayName());
     }
 

@@ -72,7 +72,7 @@ class DefaultBuildOperationExecutorTest extends ConcurrentSpec {
         }
 
         then:
-        1 * progressLoggerFactory.newOperation(_ as Class, _ as BuildOperationDescriptor) >> progressLogger
+        1 * progressLoggerFactory.newOperation(_ as String, _ as BuildOperationDescriptor) >> progressLogger
         1 * progressLogger.start("<some-operation>", "<some-op>")
 
         then:
@@ -128,7 +128,7 @@ class DefaultBuildOperationExecutorTest extends ConcurrentSpec {
         }
 
         then:
-        1 * progressLoggerFactory.newOperation(_ as Class, _ as BuildOperationDescriptor) >> progressLogger
+        1 * progressLoggerFactory.newOperation(_ as String, _ as BuildOperationDescriptor) >> progressLogger
         1 * progressLogger.start("<some-operation>", "<some-op>")
 
         then:
@@ -162,7 +162,7 @@ class DefaultBuildOperationExecutorTest extends ConcurrentSpec {
         operationExecutor.run(buildOperation)
 
         then:
-        1 * progressLoggerFactory.newOperation(_ as Class, _ as BuildOperationDescriptor) >> Spy(NoOpProgressLoggerFactory.Logger)
+        1 * progressLoggerFactory.newOperation(_ as String, _ as BuildOperationDescriptor) >> Spy(NoOpProgressLoggerFactory.Logger)
         1 * buildOperation.run(_) >> { BuildOperationContext context -> context.failed(failure) }
 
         then:

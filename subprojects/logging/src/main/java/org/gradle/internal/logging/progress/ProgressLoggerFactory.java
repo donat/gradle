@@ -48,7 +48,8 @@ public interface ProgressLoggerFactory {
      * @param buildOperationDescriptor descriptor for the build operation associated with this logger.
      * @return the progress logger for the operation.
      */
-    ProgressLogger newOperation(Class<?> loggerCategory, BuildOperationDescriptor buildOperationDescriptor);
+    ProgressLogger newOperation(String loggerCategory, BuildOperationDescriptor buildOperationDescriptor);
 
     ProgressLogger newOperation(Class<?> loggerClass, ProgressLogger parent);
+
 }

@@ -41,13 +41,20 @@ public class DefaultProgressLoggerFactory implements ProgressLoggerFactory {
         this.clock = clock;
     }
 
+    @Override
     public ProgressLogger newOperation(Class loggerCategory) {
         return newOperation(loggerCategory.getName());
     }
 
-    public ProgressLogger newOperation(Class loggerCategory, @Nullable BuildOperationDescriptor buildOperationDescriptor) {
+    @Override
+    public ProgressLogger newOperation(String loggerCategory) {
+        return init(loggerCategory, null);
+    }
+
+    @Override
+    public ProgressLogger newOperation(String loggingCategory, BuildOperationDescriptor buildOperationDescriptor) {
         ProgressLogger logger = init(
-            loggerCategory.getName(),
+            loggingCategory,
             null,
             true,
             buildOperationDescriptor.getId(),
@@ -63,10 +70,7 @@ public class DefaultProgressLoggerFactory implements ProgressLoggerFactory {
         return logger;
     }
 
-    public ProgressLogger newOperation(String loggerCategory) {
-        return init(loggerCategory, null);
-    }
-
+    @Override
     public ProgressLogger newOperation(Class loggerClass, ProgressLogger parent) {
         return init(loggerClass.toString(), parent);
     }
@@ -155,41 +159,49 @@ public class DefaultProgressLoggerFactory implements ProgressLoggerFactory {
             return category + " - " + description;
         }
 
+        @Override
         public String getDescription() {
             return description;
         }
 
+        @Override
         public ProgressLogger setDescription(String description) {
             assertCanConfigure();
             this.description = description;
             return this;
         }
 
+        @Override
         public String getShortDescription() {
             return shortDescription;
         }
 
+        @Override
         public ProgressLogger setShortDescription(String shortDescription) {
             assertCanConfigure();
             this.shortDescription = shortDescription;
             return this;
         }
 
+        @Override
         public String getLoggingHeader() {
             return loggingHeader;
         }
 
+        @Override
         public ProgressLogger setLoggingHeader(String loggingHeader) {
             assertCanConfigure();
             this.loggingHeader = loggingHeader;
             return this;
         }
 
+        @Override
         public ProgressLogger start(String description, String shortDescription) {
             start(description, shortDescription, 0);
             return this;
         }
 
+        @Override
         public ProgressLogger start(String description, String shortDescription, int totalProgress) {
             setDescription(description);
             setShortDescription(shortDescription);
@@ -197,14 +209,17 @@ public class DefaultProgressLoggerFactory implements ProgressLoggerFactory {
             return this;
         }
 
+        @Override
         public void started() {
             started(null);
         }
 
+        @Override
         public void started(String status) {
             started(status, 0);
         }
 
+        @Override
         public void started(String status, int totalProgress) {
             if (!GUtil.isTrue(description)) {
                 throw new IllegalStateException("A description must be specified before this operation is started.");
@@ -234,19 +249,23 @@ public class DefaultProgressLoggerFactory implements ProgressLoggerFactory {
             ));
         }
 
+        @Override
         public void progress(String status) {
             progress(status, false);
         }
 
+        @Override
         public void progress(String status, boolean failing) {
             assertRunning();
             listener.progress(new ProgressEvent(progressOperationId, ensureNotNull(status), failing));
         }
 
+        @Override
         public void completed() {
             completed(null, false);
         }
 
+        @Override
         public void completed(String status, boolean failed) {
             assertRunning();
             state = State.completed;

@@ -66,6 +66,12 @@ public class EventFiringTaskExecuter implements TaskExecuter {
                 return BuildOperationDescriptor.displayName("Task " + task.getIdentityPath())
                     .name(task.getIdentityPath().toString())
                     .progressDisplayName(task.getIdentityPath().toString())
+
+                    // This is a legacy quirk.
+                    // Scans use this to determine that progress logging is indicating start/finish of tasks.
+                    // This can be removed in Gradle 5.0 (along with the concept of a “logging category” of an operation).
+                    .progressLoggingCategory("class org.gradle.internal.buildevents.TaskExecutionLogger")
+
                     .operationType(BuildOperationCategory.TASK)
                     .details(taskOperation);
             }
